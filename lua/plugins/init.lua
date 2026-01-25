@@ -24,6 +24,12 @@ return {
   },
 
   {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    opts = require "configs.copilot",
+  },
+
+  {
     "nvim-telescope/telescope.nvim",
     opts = require "configs.telescope",
   },

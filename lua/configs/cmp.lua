@@ -15,6 +15,17 @@ local function opts()
   opts.completion.completeopt = "menu,menuone,noselect"
   opts.experimental = opts.experimental or { ghost_text = true }
 
+  -- Remap Tab and Shift-Tab to navigate copilot suggestions
+  local tab_mapping = opts.mapping and opts.mapping["<Tab>"]
+  local shift_tab_mapping = opts.mapping and opts.mapping["<S-Tab>"]
+
+  opts.mapping = vim.tbl_extend("force", opts.mapping or {}, {
+    ["<Up>"] = shift_tab_mapping,
+    ["<Down>"] = tab_mapping,
+    ["<Tab>"] = cmp.config.disable,
+    ["<S-Tab>"] = cmp.config.disable,
+  })
+
   return opts
 end
 

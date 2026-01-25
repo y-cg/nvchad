@@ -6,7 +6,6 @@ local options = {
     json = { "prettier" },
     css = { "prettier" },
     html = { "prettier" },
-    scala = { "scalafmt " },
     nix = { "nixfmt" },
   },
 

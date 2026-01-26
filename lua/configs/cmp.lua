@@ -16,12 +16,23 @@ local function opts()
   opts.experimental = opts.experimental or { ghost_text = true }
 
   -- Remap Tab and Shift-Tab to navigate copilot suggestions
-  local tab_mapping = opts.mapping and opts.mapping["<Tab>"]
-  local shift_tab_mapping = opts.mapping and opts.mapping["<S-Tab>"]
-
   opts.mapping = vim.tbl_extend("force", opts.mapping or {}, {
-    ["<Up>"] = shift_tab_mapping,
-    ["<Down>"] = tab_mapping,
+    ["<Up>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+        return
+      end
+    end, { "i", "s" }),
+    ["<Down>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+        return
+      end
+    end, { "i", "s" }),
     ["<Tab>"] = cmp.config.disable,
     ["<S-Tab>"] = cmp.config.disable,
   })

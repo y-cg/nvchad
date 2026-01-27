@@ -2,6 +2,8 @@ local function opts()
   local opts = require "nvchad.configs.cmp"
   local cmp = require "cmp"
 
+  local copilot_suggestion = require "copilot.suggestion"
+
   opts.sources = opts.sources or {}
   table.insert(opts.sources, {
     name = "lazydev",
@@ -30,7 +32,18 @@ local function opts()
         return
       end
     end, { "i", "s" }),
-    ["<Tab>"] = cmp.config.disable,
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if copilot_suggestion.is_visible() then
+        copilot_suggestion.accept()
+        return
+      end
+
+      if cmp.visible() then
+        cmp.confirm { select = true }
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
     ["<S-Tab>"] = cmp.config.disable,
   })
 

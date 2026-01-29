@@ -35,10 +35,7 @@ local function opts()
     ["<Tab>"] = cmp.mapping(function(fallback)
       if copilot_suggestion.is_visible() then
         copilot_suggestion.accept()
-        return
-      end
-
-      if cmp.visible() then
+      elseif cmp.visible() then
         cmp.confirm { select = true }
       else
         fallback()

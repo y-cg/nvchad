@@ -14,7 +14,6 @@ local servers = {
   "tombi",
   "yamlls",
   "marksman",
-  "markdown_oxide",
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"

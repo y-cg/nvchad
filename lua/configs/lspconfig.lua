@@ -28,7 +28,7 @@ local on_attach = function(client, bufnr)
   })
   -- manually call a refresh
   vim.lsp.inlay_hint.enable(true)
-  vim.lsp.codelens.refresh()
+  vim.lsp.codelens.enable(true, { bufnr = bufnr })
 end
 
 -- lsps with default config

@@ -7,6 +7,10 @@
 }:
 
 {
+  overlays = [
+    inputs.neovim-nightly-overlay.overlays.default
+  ];
+
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git

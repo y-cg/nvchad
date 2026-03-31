@@ -4,5 +4,7 @@ inputs:
     inputs:
       nixpkgs:
         follows: nixpkgs
+  neovim-nightly-overlay:
+    url: github:nix-community/neovim-nightly-overlay
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling

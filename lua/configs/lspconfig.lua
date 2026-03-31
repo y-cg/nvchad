@@ -1,6 +1,10 @@
 -- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
+-- Blink.cmp usually advertises its own LSP capabilities, but on Neovim 0.11+
+-- with `vim.lsp.config` the upstream docs allow skipping that extra wiring.
+-- TODO: Revisit this if the config stops using `vim.lsp.config`.
+
 local servers = {
   "html",
   "cssls",
@@ -24,7 +28,9 @@ local on_attach = function(client, bufnr)
   -- https://gist.github.com/Chattille/adbd1f296b03bc3f85bb7f8d6f648c6f
   vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
     buffer = bufnr,
-    callback = vim.lsp.codelens.refresh,
+    callback = function()
+      vim.lsp.codelens.enable(true, { bufnr = bufnr })
+    end,
   })
   -- manually call a refresh
   vim.lsp.inlay_hint.enable(true)

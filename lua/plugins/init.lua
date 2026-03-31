@@ -18,9 +18,13 @@ return {
     opts = require "configs.lazydev",
   },
 
+  -- Start from NvChad's blink integration so we inherit their menu renderer,
+  -- theme integration, and the companion snippet/autopairs plugins.
+  { import = "nvchad.blink.lazyspec" },
+
   {
-    "hrsh7th/nvim-cmp",
-    opts = require "configs.cmp",
+    "saghen/blink.cmp",
+    opts = require "configs.blink",
   },
 
   {

@@ -18,6 +18,7 @@ local servers = {
   "tombi",
   "yamlls",
   "marksman",
+  "r_language_server",
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"

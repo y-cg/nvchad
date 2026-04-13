@@ -12,13 +12,13 @@ local servers = {
   "lua_ls",
   "clangd",
   "rust_analyzer",
-  "pyright",
   "nixd",
   "ocamllsp",
   "tombi",
   "yamlls",
   "marksman",
   "r_language_server",
+  "basedpyright",
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"

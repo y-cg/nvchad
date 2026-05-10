@@ -31,3 +31,7 @@ map("n", "<S-H>", function()
 end, { desc = "Goto previous buffer" })
 
 map("n", "<leader><leader>", "<cmd> Telescope find_files <CR>", { desc = "Find files" })
+
+-- Leap.nvim mappings
+map({ "n", "x", "o" }, "s", "<Plug>(leap-forward)", { desc = "Leap forward to" })
+map({ "n", "x", "o" }, "S", "<Plug>(leap-backward)", { desc = "Leap backward to" })

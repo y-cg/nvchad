@@ -44,6 +44,13 @@ return {
   },
 
   {
+    "andyg/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
+    lazy = false,
+    opts = require "configs.leap",
+  },
+
+  {
     "tpope/vim-surround",
     lazy = false,
   },

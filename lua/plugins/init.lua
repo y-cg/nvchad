@@ -33,9 +33,15 @@ return {
     opts = require "configs.copilot",
   },
 
+  -- Disable the telescope entry that NvChad pulls in via `import = "nvchad.plugins"`.
+  -- We use tv.nvim as the picker instead, and the NvChad defaults for the
+  -- telescope-backed keybinds (<leader>f*, <leader>cm, etc.) are explicitly
+  -- remapped or no-op'd in lua/mappings.lua.
+  { "nvim-telescope/telescope.nvim", enabled = false },
+
   {
-    "nvim-telescope/telescope.nvim",
-    opts = require "configs.telescope",
+    "alexpasmantier/tv.nvim",
+    opts = require "configs.tv",
   },
 
   {

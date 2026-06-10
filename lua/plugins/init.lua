@@ -74,6 +74,12 @@ return {
   },
   {
     "wakatime/vim-wakatime",
+    -- Skip loading entirely when the wakatime API token is missing or empty —
+    -- wakatime would otherwise error on every keystroke trying to authenticate.
+    cond = function()
+      local token_path = vim.fn.expand "~/.wakatime/token"
+      return vim.fn.filereadable(token_path) == 1 and vim.fn.getfsize(token_path) > 0
+    end,
     lazy = false,
   },
 }

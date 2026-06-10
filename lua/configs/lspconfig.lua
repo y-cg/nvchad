@@ -5,6 +5,19 @@ require("nvchad.configs.lspconfig").defaults()
 -- with `vim.lsp.config` the upstream docs allow skipping that extra wiring.
 -- TODO: Revisit this if the config stops using `vim.lsp.config`.
 
+-- Register the `buf-config` filetype for buf's workspace/config files.
+-- The `proto` filetype is built into Neovim, so .proto files Just Work.
+-- `buf.yaml` and friends are not auto-detected; see:
+-- https://github.com/bufbuild/buf/blob/main/cmd/buf-ls/README.md
+vim.filetype.add {
+  filename = {
+    ["buf.yaml"] = "buf-config",
+    ["buf.gen.yaml"] = "buf-config",
+    ["buf.policy.yaml"] = "buf-config",
+    ["buf.lock"] = "buf-config",
+  },
+}
+
 local servers = {
   "html",
   "cssls",
@@ -19,6 +32,8 @@ local servers = {
   "marksman",
   "r_language_server",
   "basedpyright",
+  -- Protobuf / Buf workspaces: `buf` ships its own LSP (`buf lsp serve`).
+  "buf_ls",
 }
 
 local nvlsp = require "nvchad.configs.lspconfig"

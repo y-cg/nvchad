@@ -32,6 +32,7 @@ local servers = {
   "marksman",
   "r_language_server",
   "basedpyright",
+  "gopls",
   -- Protobuf / Buf workspaces: `buf` ships its own LSP (`buf lsp serve`).
   "buf_ls",
 }

@@ -62,6 +62,11 @@ return {
   },
 
   {
+    "lambdalisue/vim-suda",
+    lazy = false,
+  },
+
+  {
     "stevearc/oil.nvim",
     ---@module 'oil'
     ---@type oil.SetupOpts

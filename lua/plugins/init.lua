@@ -77,6 +77,22 @@ return {
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
   },
+  -- Neogit: Magit-style git porcelain. Lazy-loaded behind the `:Neogit`
+  -- command and the `<leader>gg` mapping defined in lua/mappings.lua so it
+  -- doesn't pay startup cost when we're not touching git.
+  {
+    "NeogitOrg/neogit",
+    cmd = "Neogit",
+    keys = {
+      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit status" },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+    },
+    opts = require "configs.neogit",
+  },
+
   {
     "wakatime/vim-wakatime",
     -- Skip loading entirely when the wakatime API token is missing or empty —

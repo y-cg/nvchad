@@ -20,4 +20,22 @@ return {
     -- is just a capability flag.
     diffview = true,
   },
+
+  -- Pin the navigation/fold bindings we actually rely on. These are all
+  -- Neogit defaults today, but we list them explicitly so an upstream
+  -- rebinding (or a future config merge surprise) can't silently steal
+  -- them out from under muscle memory.
+  mappings = {
+    status = {
+      -- Magit-style depth folds: `zO` expands every hunk in the section
+      -- under the cursor, `zC` collapses back to the section header.
+      ["zO"] = "Depth4",
+      ["zC"] = "Depth1",
+
+      -- Hunk-header jumps inside the status buffer. `{` / `}` match the
+      -- vim paragraph-motion mnemonic (previous/next block).
+      ["{"] = "GoToPreviousHunkHeader",
+      ["}"] = "GoToNextHunkHeader",
+    },
+  },
 }

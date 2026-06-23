@@ -19,6 +19,10 @@ vim.opt.rtp:prepend(lazypath)
 local lazy_config = require "configs.lazy"
 
 -- load plugins
+-- NvChad must be declared here at the top level so lazy can bootstrap it and
+-- add it to the runtimepath before attempting to import "nvchad.plugins".
+-- A sibling merge spec in lua/plugins/nvchad.lua adds keys without repeating
+-- this bootstrapping concern.
 require("lazy").setup({
   {
     "NvChad/NvChad",

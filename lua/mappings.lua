@@ -1,6 +1,18 @@
 require "nvchad.mappings"
 
--- add yours here
+-- ============================================================================
+-- Global mappings + NvChad default overrides
+-- ============================================================================
+-- This file holds two categories of mappings:
+-- 1. Editor-global mappings (not belonging to any single plugin)
+-- 2. Overrides for NvChad defaults — these must be set AFTER the
+--    `require "nvchad.mappings"` call above to win (mappings.lua is loaded
+--    last via vim.schedule in init.lua), so they cannot live in a plugin
+--    slice's lazy `keys` — those get overwritten back by nvchad.mappings
+--    (see CONTEXT.md)
+--
+-- Plugin-specific mappings that don't conflict with NvChad defaults (e.g.
+-- leap's s/S, neogit's <leader>gg) live in their own slices, not here.
 
 local map = vim.keymap.set
 
@@ -68,7 +80,3 @@ map("n", "<leader>fo", "<Nop>", { desc = "Old files (disabled)" })
 map("n", "<leader>ma", "<Nop>", { desc = "Marks (disabled)" })
 map("n", "<leader>gt", "<Nop>", { desc = "Git status (disabled)" })
 map("n", "<leader>pt", "<Nop>", { desc = "Pick hidden term (disabled)" })
-
--- Leap.nvim mappings
-map({ "n", "x", "o" }, "s", "<Plug>(leap-forward)", { desc = "Leap forward to" })
-map({ "n", "x", "o" }, "S", "<Plug>(leap-backward)", { desc = "Leap backward to" })

@@ -1,29 +1,9 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = "\\"
-vim.g.suda_smart_edit = 1
 
--- for neovide
+-- GUI integration is only loaded under Neovide; see lua/configs/neovide.lua
 if vim.g.neovide then
-  -- copy paste
-  local function save()
-    vim.cmd.write()
-  end
-
-  local function copy()
-    vim.cmd [[normal! "+y]]
-  end
-
-  local function paste()
-    vim.api.nvim_paste(vim.fn.getreg "+", true, -1)
-  end
-
-  vim.keymap.set({ "n", "i", "v" }, "<D-s>", save, { desc = "Save" })
-  vim.keymap.set("v", "<D-c>", copy, { silent = true, desc = "Copy" })
-  vim.keymap.set({ "n", "i", "v", "c", "t" }, "<D-v>", paste, { silent = true, desc = "Paste" })
-
-  -- make it transparent
-  vim.g.neovide_opacity = 0.8
-  vim.g.neovide_normal_opacity = 0.8
+  require "configs.neovide"
 end
 
 -- bootstrap lazy and all plugins

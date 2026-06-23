@@ -11,10 +11,7 @@
 -- two halves of the same decision, kept together so a future picker swap is
 -- visible in one place.
 --
--- Picker mappings (<leader>ff/fa/fw/cm/<leader><leader>) are NOT in this file:
--- they override NvChad's same-named telescope mappings and must take effect
--- after `require "nvchad.mappings"`, so they live in lua/mappings.lua
--- (load-order constraint — see CONTEXT.md).
+-- Picker mappings live in this slice's keys field below.
 
 return {
   -- Disable the Telescope spec pulled in by NvChad via `import = "nvchad.plugins"`.
@@ -23,6 +20,44 @@ return {
 
   {
     "alexpasmantier/tv.nvim",
+
+    keys = {
+      {
+        "<leader><leader>",
+        function()
+          require("tv").tv_channel "files"
+        end,
+        desc = "Find files (tv)",
+      },
+      {
+        "<leader>ff",
+        function()
+          require("tv").tv_channel "files"
+        end,
+        desc = "Find files (tv)",
+      },
+      {
+        "<leader>fa",
+        function()
+          require("tv").tv_channel "files"
+        end,
+        desc = "Find files (tv)",
+      },
+      {
+        "<leader>fw",
+        function()
+          require("tv").tv_channel "text"
+        end,
+        desc = "Live grep (tv)",
+      },
+      {
+        "<leader>cm",
+        function()
+          require("tv").tv_channel "git-log"
+        end,
+        desc = "Git commits (tv)",
+      },
+    },
 
     -- opts is a function because handlers need require("tv").handlers
     opts = function()

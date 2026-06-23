@@ -1,8 +1,8 @@
 -- nvim-lspconfig — LSP server registration and per-buffer on_attach behavior
 --
--- Note: global diagnostic/code-action mappings (<leader>f <leader>qf) are NOT
--- here — they go through vim.diagnostic / vim.lsp builtins and don't belong to
--- any single plugin, so they live in lua/mappings.lua.
+-- Global diagnostic/code-action mappings (<leader>f, <leader>qf) go through
+-- vim.diagnostic / vim.lsp builtins and don't belong to any single plugin,
+-- so they live in lua/mappings.lua.
 --
 -- Language-specific overrides live in sibling files:
 --   buf.lua   — filetype registration for buf workspace/config files

@@ -62,28 +62,6 @@ local servers = require("plugins.lspconfig.servers")  -- = lua/plugins/lspconfig
 Decision rule: is this mapping specific to one plugin, or general enough to
 stand alone? General → `mappings.lua`.
 
-### Exception: NvChad default overrides must stay in mappings.lua
-
-There is a hard load-order rule: `init.lua` uses `vim.schedule` to
-`require "mappings"` at the very end of startup, and `mappings.lua` calls
-`require "nvchad.mappings"` on its first line. This means **NvChad's default
-mappings are registered last** and will overwrite any same-lhs mapping
-registered earlier.
-
-lazy's slice `keys` are registered early (during `lazy.setup`), so any mapping
-whose lhs **collides with a NvChad default** placed in a slice `keys` will be
-overwritten back to the default when `nvchad.mappings` runs.
-
-Conclusion:
-- **Mappings that collide with NvChad defaults** (e.g. picker `<leader>ff/fa/fw/cm`,
-  format `<leader>fm`) → must live in `mappings.lua`, set **after**
-  `require "nvchad.mappings"`.
-- **Plugin-specific mappings that don't collide** (e.g. leap's `s`/`S`,
-  neogit's `<leader>gg`) → go in their slice's `keys` field as normal.
-
-To check whether a mapping collides: inspect
-`~/.local/share/nvim/lazy/NvChad/lua/nvchad/mappings.lua`.
-
 ## Directory responsibilities
 
 - **`lua/plugins/`** — feature slices; one file (or directory) per feature.

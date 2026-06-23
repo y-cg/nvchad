@@ -2,6 +2,15 @@
 return {
   "stevearc/conform.nvim",
   event = "BufWritePre", -- load before save to support format-on-save
+  keys = {
+    {
+      "<leader>fm",
+      function()
+        require("conform").format()
+      end,
+      desc = "Format file",
+    },
+  },
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
@@ -19,8 +28,4 @@ return {
       lsp_fallback = true,
     },
   },
-
-  -- Note: the manual format mapping <leader>fm is NOT here — it overrides
-  -- NvChad's same-named default and must be set after `require "nvchad.mappings"`,
-  -- so it lives in lua/mappings.lua (load-order constraint — see CONTEXT.md).
 }

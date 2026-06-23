@@ -3,6 +3,10 @@
 -- Note: global diagnostic/code-action mappings (<leader>f <leader>qf) are NOT
 -- here — they go through vim.diagnostic / vim.lsp builtins and don't belong to
 -- any single plugin, so they live in lua/mappings.lua.
+--
+-- Language-specific overrides live in sibling files:
+--   buf.lua   — filetype registration for buf workspace/config files
+--   ocaml.lua — extra LSP settings for ocamllsp
 return {
   "neovim/nvim-lspconfig",
   config = function()
@@ -13,19 +17,6 @@ return {
     -- Neovim 0.11+ and `vim.lsp.config`, upstream docs allow skipping that
     -- extra wiring.
     -- TODO: revisit if we stop using `vim.lsp.config`
-
-    -- Register the `buf-config` filetype for buf workspace/config files.
-    -- The `proto` filetype is built into Neovim so .proto files work out of
-    -- the box. buf.yaml etc. are not auto-detected; see:
-    -- https://github.com/bufbuild/buf/blob/main/cmd/buf-ls/README.md
-    vim.filetype.add {
-      filename = {
-        ["buf.yaml"] = "buf-config",
-        ["buf.gen.yaml"] = "buf-config",
-        ["buf.policy.yaml"] = "buf-config",
-        ["buf.lock"] = "buf-config",
-      },
-    }
 
     local servers = {
       "html",
@@ -70,17 +61,9 @@ return {
       })
     end
 
-    vim.lsp.config("ocamllsp", {
-      -- See: https://github.com/ocaml/ocaml-lsp/blob/master/ocaml-lsp-server/docs/ocamllsp/config.md
-      settings = {
-        inlayHints = {
-          enable = true,
-        },
-        codelens = {
-          enable = true,
-        },
-      },
-    })
+    -- Language-specific overrides.
+    require "plugins.lspconfig.buf"
+    require "plugins.lspconfig.ocaml"
 
     vim.lsp.enable(servers, true)
   end,

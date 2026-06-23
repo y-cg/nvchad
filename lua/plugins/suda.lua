@@ -1,5 +1,6 @@
 -- vim-suda — transparently read/write read-only files with sudo (no need to
 -- reopen nvim as root)
+---@type LazySpec
 return {
   "lambdalisue/vim-suda",
   lazy = false,

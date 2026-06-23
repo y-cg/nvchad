@@ -1,4 +1,5 @@
 -- nvim-treesitter — syntax-tree-based highlighting / indentation / text objects
+---@type LazySpec
 return {
   "nvim-treesitter/nvim-treesitter",
   opts = function(_, opts)

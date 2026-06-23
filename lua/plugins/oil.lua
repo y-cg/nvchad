@@ -1,5 +1,6 @@
 -- oil.nvim — edit directories as ordinary buffers (add/remove/rename files
 -- the same way you'd edit text)
+---@type LazySpec
 return {
   "stevearc/oil.nvim",
   ---@module 'oil'

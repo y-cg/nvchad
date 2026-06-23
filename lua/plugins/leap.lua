@@ -1,5 +1,6 @@
 -- leap.nvim — jump to any visible position with two keystrokes.
 -- Installed from the Codeberg mirror (`url` overrides the default GitHub source).
+---@type LazySpec
 return {
   "andyg/leap.nvim",
   url = "https://codeberg.org/andyg/leap.nvim",

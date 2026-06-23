@@ -13,6 +13,7 @@
 --
 -- Picker mappings live in this slice's keys field below.
 
+---@type LazySpec[]
 return {
   -- Disable the Telescope spec pulled in by NvChad via `import = "nvchad.plugins"`.
   -- Its <leader>f* mappings are explicitly remapped or no-op'd in lua/mappings.lua.

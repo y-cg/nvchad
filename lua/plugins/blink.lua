@@ -8,6 +8,7 @@
 -- 2. Layer our own sources (lazydev) and keymaps (Copilot/<Tab> coordination)
 --    on top.
 
+---@type LazySpec[]
 return {
   { import = "nvchad.blink.lazyspec" },
 

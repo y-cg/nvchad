@@ -1,5 +1,6 @@
 -- copilot.lua — GitHub Copilot inline suggestions (<Tab> accept logic is
 -- coordinated in the blink slice)
+---@type LazySpec
 return {
   "zbirenbaum/copilot.lua",
   event = "InsertEnter",

@@ -1,6 +1,7 @@
 -- Neogit — Magit-style git interface.
 -- Lazy-loaded: only `:Neogit` or <leader>gg triggers it, so sessions that
 -- never touch git pay no startup cost.
+---@type LazySpec
 return {
   "NeogitOrg/neogit",
   cmd = "Neogit",

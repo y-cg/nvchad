@@ -1,4 +1,5 @@
 -- lazydev.nvim — Lua LSP type completions for Neovim / plugin development
+---@type LazySpec
 return {
   "folke/lazydev.nvim",
   ft = "lua", -- only loaded for Lua files

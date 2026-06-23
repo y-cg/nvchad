@@ -21,6 +21,7 @@
 -- require-order coupling):
 --   buf.lua   — buf_ls: registers buf workspace/config filetypes via `setup`
 --   ocaml.lua — ocamllsp: extra inlay-hint / codelens settings
+---@type LazySpec
 return {
   "neovim/nvim-lspconfig",
   config = function()

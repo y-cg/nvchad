@@ -10,6 +10,7 @@
 -- The bootstrap spec (lazy=false, branch, import) lives in init.lua because
 -- NvChad must be on the runtimepath before "nvchad.plugins" can be resolved.
 -- This merge spec adds keys only — lazy merges the two specs automatically.
+---@type LazySpec
 return {
   "NvChad/NvChad",
 

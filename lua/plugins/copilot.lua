@@ -19,6 +19,12 @@ return {
     },
     filetypes = {
       markdown = true,
+      -- Copilot attaches to almost every buffer by default. When it attaches
+      -- to an oil buffer, NvChad's global LspAttach autocmd fires and sets the
+      -- buffer-local LSP keymaps (e.g. `gd` -> definition), which clobber
+      -- oil's own `gd`/`go` navigation. Copilot has nothing to offer in a
+      -- directory buffer, so disable it there.
+      oil = false,
     },
   },
 }

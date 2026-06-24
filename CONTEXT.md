@@ -28,14 +28,16 @@ If remnants survive (stray mappings, opts elsewhere), it wasn't truly a slice.
 - **Large plugin → directory**: `lua/plugins/<name>/init.lua` returns the spec;
   sibling files hold private implementation details.
 
-**When to promote to a directory**: don't go by line count — ask whether a
-second file is genuinely needed. A slice that's grown to the point where
-extracting a part into its own file *concentrates* complexity warrants a
-directory. Merely being long (e.g. the current `lspconfig`, `tv`, `blink`)
-while remaining a single cohesive config block does not — forced splitting
-*scatters* complexity and fails the delete test.
+**When to promote to a directory**: don't go by line count — go by feel. If a
+slice has become hard to maintain, or it's obvious a part wants to live on its
+own, just split it. Don't overthink the bar.
 
-A directory is an **escape hatch**; no plugin currently needs one.
+`lspconfig` is the one directory in the tree: its per-server entries
+(`buf.lua`, `ocaml.lua`) are independently meaningful pure-data modules that
+clearly belonged in their own files. `tv` and `blink` are long but stay single
+files because each is one cohesive config block with nothing crying out to be
+extracted. When in doubt, leave it one file — a premature split scatters
+complexity and fails the delete test.
 
 ### Cross-file references inside a directory
 
@@ -120,7 +122,12 @@ mapping belongs to that slice's `keys` even though the API itself is a builtin.
 - **`init.lua`** — pure bootstrap: leader/base46 cache, lazy clone,
   `lazy.setup`, theme load, entry-module requires. No concrete feature logic
   (features go in slices; GUI goes in `configs/`).
-- **`lua/mappings.lua`** — editor-global mappings.
+- **`lua/mappings.lua`** — editor-global mappings. This file deliberately does
+  **not** `require "nvchad.mappings"`: we keep only the small subset of general
+  mappings we actually use (window navigation, save, `jk`→ESC, `;`→`:`), rather
+  than inheriting NvChad's full default set. Plugin-specific mappings live in
+  their slice's `keys` (see "Mapping ownership" above); add a general mapping
+  here only when no single plugin owns it.
 - **`lua/options.lua`** / `lua/chadrc.lua` — Neovim options / NvChad theme
   configuration.
 

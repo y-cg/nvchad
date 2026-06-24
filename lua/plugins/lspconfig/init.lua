@@ -4,9 +4,15 @@
 -- `vim.lsp.config` (Neovim 0.11+), so no explicit `capabilities` wiring is
 -- needed here. TODO: revisit if we stop using `vim.lsp.config`.
 --
--- Global diagnostic/code-action mappings (<leader>f, <leader>qf) go through
--- vim.diagnostic / vim.lsp builtins and don't belong to any single plugin,
--- so they live in lua/mappings.lua.
+-- Load timing: `lazy = false` is explicit because adding a `keys` field would
+-- otherwise make lazy.nvim lazy-load this plugin on those keys — which would
+-- stop LSP servers from starting when a file is opened. lspconfig must load at
+-- startup; the `keys` below are set at startup, not used as load triggers.
+--
+-- Global diagnostic/code-action mappings (<leader>f, <leader>qf) call the
+-- vim.diagnostic / vim.lsp builtins, but this repo's only path to a working
+-- LSP is this slice — so the mappings live here and travel with it. See
+-- CONTEXT.md "Mappings that call a builtin API but only matter under a plugin".
 --
 -- Server registry shape: `servers` is a name → entry table, the single source
 -- of truth for both registration and `vim.lsp.enable`. Each entry holds the
@@ -24,6 +30,28 @@
 ---@type LazySpec
 return {
   "neovim/nvim-lspconfig",
+  lazy = false,
+
+  -- Diagnostic / code-action mappings. Handlers are vim.lsp / vim.diagnostic
+  -- builtins, but they're useless without the LSP this slice starts, so they
+  -- belong here — removing this slice removes them too.
+  keys = {
+    {
+      "<leader>qf",
+      function()
+        vim.lsp.buf.code_action()
+      end,
+      desc = "Quick fix",
+    },
+    {
+      "<leader>f",
+      function()
+        vim.diagnostic.open_float { border = "rounded" }
+      end,
+      desc = "Floating diagnostic",
+    },
+  },
+
   config = function()
     -- Load NvChad defaults (lua_ls, etc.)
     require("nvchad.configs.lspconfig").defaults()

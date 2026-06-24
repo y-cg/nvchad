@@ -53,14 +53,63 @@ local servers = require("plugins.lspconfig.servers")  -- = lua/plugins/lspconfig
 ## Mapping ownership
 
 - **Plugin-specific mappings → go in the slice's `keys` field** (they travel
-  with the plugin and double as lazy-load triggers).
+  with the plugin; for a lazy-loaded slice they also double as load triggers).
+  This is the *only* mechanism that lazy.nvim unmaps on `:Lazy unload`, so a
+  mapping owned by a plugin MUST live in its `keys` field — never as a
+  `vim.keymap.set` inside a `config` function, which would survive the plugin
+  being unloaded. Note: adding `keys` to a slice makes it lazy by default —
+  if the plugin must load at startup, set `lazy = false` explicitly (see
+  `lspconfig`).
+  **Exception: buffer-local mappings** (e.g. LSP jump keys set in `on_attach`
+  with `{ buffer = bufnr }`). Their lifecycle is the buffer, not the plugin, so
+  the unload rule does not apply — they may be set inside an `on_attach`-style
+  hook that holds the `bufnr`, and only there.
 - **Editor-global mappings → stay in `lua/mappings.lua`**: general mappings not
-  owned by any single plugin — e.g. `jk`→ESC, `;`→`:`, buffer cycling, and
-  mappings for builtins like `vim.lsp`/`vim.diagnostic` (no plugin slice to
-  attach them to).
+  owned by any single plugin — e.g. `jk`→ESC, `;`→`:`, window navigation, save,
+  clear-search.
 
 Decision rule: is this mapping specific to one plugin, or general enough to
 stand alone? General → `mappings.lua`.
+
+### `keys` field vs `opts.keymap`
+
+Both travel with the plugin, but they are not interchangeable — pick by
+*who consumes the key*:
+
+- **`keys` field** — the handler is something *we* invoke: a plugin command or
+  function we trigger from the outside (e.g. `conform.format` on `<leader>fm`,
+  `leap.leap` on `s`, `neogit.open` on `<leader>gg`). lazy owns the lifecycle
+  and unmaps on unload.
+- **`opts.keymap`** — the key is *consumed by the plugin's own state machine*,
+  where routing it through `keys` would bypass internal logic (e.g. blink's
+  `<Tab>`/`<CR>` accept/reject coordination, copilot's suggestion trigger). The
+  plugin reads and sets these itself; we only feed it config.
+
+Test: does the key fire a plugin API we call, or does the plugin intercept the
+key itself? Former → `keys`; latter → `opts.keymap`.
+
+### Mappings for a plugin bundled inside another
+
+Some plugins ship bundled inside a parent with no standalone lazy spec (e.g.
+NvChad bundles tabufline and Comment). Their mappings live in the **parent
+slice's `keys`** (here `nvchad.lua`), grouped under a labelled section. This
+passes the delete test: removing the parent removes the bundled component and
+its keys together.
+
+Promote to a dedicated slice only when a bundled component's key count grows
+enough to hurt the parent file's readability — not by line count alone.
+
+### Mappings that call a builtin API but only matter under a plugin
+
+Some mappings call a Neovim builtin (`vim.lsp.buf.*`, `vim.diagnostic.*`) that
+is useless without the plugin that actually drives it. The test is: *if I
+removed this slice, would the mapping still do something useful?* If not, the
+mapping belongs to that slice's `keys` even though the API itself is a builtin.
+
+- `<leader>qf` (`vim.lsp.buf.code_action`) and `<leader>f`
+  (`vim.diagnostic.open_float`) live in the **lspconfig** slice's `keys`, not
+  `mappings.lua`. This repo's only path to a working LSP is the lspconfig
+  slice; removing it should take the mappings with it.
 
 ## Directory responsibilities
 

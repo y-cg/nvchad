@@ -16,15 +16,3 @@ map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
-
---============================================================================
--- LSP builtins
--- ============================================================================
--- vim.diagnostic / vim.lsp are builtins with no plugin slice to attach to.
-map("n", "<leader>qf", function()
-  vim.lsp.buf.code_action()
-end, { desc = "Quick fix" })
-
-map("n", "<leader>f", function()
-  vim.diagnostic.open_float { border = "rounded" }
-end, { desc = "Floating diagnostic" })

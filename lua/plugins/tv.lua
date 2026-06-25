@@ -95,7 +95,7 @@ return {
             -- --no-remote / --no-status-bar flags are repeated because
             -- tv.nvim replaces the channel's args wholesale when this field
             -- is set.
-            args = { "--no-remote", "--no-status-bar", "--preview-size", "50" },
+            args = { "--no-remote", "--no-status-bar", "--preview-size", "60" },
             handlers = {
               ["<CR>"] = h.open_as_files,
               ["<C-q>"] = h.send_to_quickfix,
@@ -111,6 +111,7 @@ return {
           -- open_at_line jumps to the file:line of the grep match; the rest
           -- mirrors the files channel.
           text = {
+            args = { "--no-remote", "--no-status-bar", "--preview-size", "60" },
             handlers = {
               ["<CR>"] = h.open_at_line,
               ["<C-q>"] = h.send_to_quickfix,

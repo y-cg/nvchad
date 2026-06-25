@@ -68,7 +68,7 @@ return {
         -- Bottom-anchored floating window (landscape), rounded border —
         -- closest to NvChad's default Telescope layout.
         layout = "landscape",
-        window = { border = "rounded", title_pos = "center" },
+        window = { width = 1.0, height = 1.0, border = "rounded", title_pos = "center" },
 
         -- ----------------------------------------------------------------------
         -- Channel: files — equivalent to Telescope find_files
@@ -77,6 +77,12 @@ return {
         -- we had with Telescope: send to quickfix, horizontal/vertical split,
         -- copy path to system clipboard.
         files = {
+          -- Split the picker 50/50 between the results list and the preview
+          -- panel. `--preview-size` is the preview's share of the screen
+          -- width in percent (1-99); the default is 70. The --no-remote /
+          -- --no-status-bar flags are repeated because tv.nvim replaces the
+          -- channel's args wholesale when this field is set.
+          args = { "--no-remote", "--no-status-bar", "--preview-size", "50" },
           handlers = {
             ["<CR>"] = h.open_as_files,
             ["<C-q>"] = h.send_to_quickfix,

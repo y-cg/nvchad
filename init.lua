@@ -36,6 +36,7 @@ require("lazy").setup({
 
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
+require("configs.base46-highlights").load()
 dofile(vim.g.base46_cache .. "statusline")
 
 require "options"

@@ -6,6 +6,8 @@ return {
   ---@module 'oil'
   ---@type oil.SetupOpts
   opts = {
+    -- Don't ask for confirmation it's trivial
+    skip_confirm_for_simple_edits = true,
     view_options = {
       show_hidden = true,
       -- Always hide `..` and `.git` even when show_hidden is on.

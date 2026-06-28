@@ -5,7 +5,7 @@
 -- This slice has two halves:
 -- 1. Start from NvChad's blink integration, inheriting their menu renderer,
 --    theme integration, and bundled snippet/autopairs plugins.
--- 2. Layer our own sources (lazydev) and keymaps (Copilot/<Tab> coordination)
+-- 2. Layer our own sources (lazydev) and keymaps (<Tab> AI coordination)
 --    on top.
 
 ---@type LazySpec[]
@@ -15,8 +15,6 @@ return {
   {
     "saghen/blink.cmp",
     opts = function(_, opts)
-      local copilot_suggestion = require "copilot.suggestion"
-
       -- ------------------------------------------------------------------------
       -- Source selection
       -- ------------------------------------------------------------------------
@@ -51,29 +49,33 @@ return {
       -- The previous nvim-cmp setup had ghost text enabled; preserve the same
       -- inline preview behavior after migration.
       opts.completion = opts.completion or {}
-      opts.completion.ghost_text = { enabled = true }
+      opts.completion.ghost_text = { enabled = false }
 
       -- ------------------------------------------------------------------------
       -- Keymaps
       -- ------------------------------------------------------------------------
-      -- Preserve the existing editing flow:
-      -- 1. When a Copilot suggestion is visible, <Tab> accepts it.
-      -- 2. Otherwise <Tab> accepts the current completion item.
-      -- 3. Otherwise fall back to Neovim for indent / user mappings.
+      -- Insert-mode <Tab> is a priority chain (first handler that "consumes" the
+      -- key wins; otherwise we fall through):
+      --   1. jump to the next snippet placeholder, if mid-snippet;
+      --   2. jump to / apply sidekick.nvim's next edit suggestion (NES);
+      --   3. accept the native LSP inline completion (Copilot ghost text), if any;
+      --   4. fall back to Neovim for indent / user mappings.
       --
-      -- Snippet jumping is intentionally NOT on <Tab>/<S-Tab> — that behavior
-      -- was already replaced by the old nvim-cmp override.
+      -- Note we intentionally do NOT accept the blink completion-menu item on
+      -- <Tab> here (no "select_and_accept") — that mirrors the prior setup, where
+      -- <Tab> was reserved for the AI suggestion flow. Snippet jumping stays off
+      -- <S-Tab> as before.
       opts.keymap = vim.tbl_deep_extend("force", opts.keymap or {}, {
         ["<Up>"] = { "select_prev", "fallback" },
         ["<Down>"] = { "select_next", "fallback" },
         ["<Tab>"] = {
-          function()
-            if copilot_suggestion.is_visible() then
-              copilot_suggestion.accept()
-              return true
-            end
+          "snippet_forward",
+          function() -- sidekick next edit suggestion
+            return require("sidekick").nes_jump_or_apply()
           end,
-          "select_and_accept",
+          function() -- native LSP inline completion (Copilot)
+            return vim.lsp.inline_completion.get()
+          end,
           "fallback",
         },
         ["<S-Tab>"] = false,

@@ -76,6 +76,9 @@ return {
       gopls = {},
       -- Protobuf / Buf workspace: `buf` ships its own LSP (`buf lsp serve`)
       buf_ls = require "plugins.lspconfig.buf",
+      -- GitHub Copilot: drives native inline completion + sidekick.nvim NES.
+      -- Needs `npm install -g @github/copilot-language-server`.
+      copilot = require "plugins.lspconfig.copilot",
     }
 
     local nvlsp = require "nvchad.configs.lspconfig"

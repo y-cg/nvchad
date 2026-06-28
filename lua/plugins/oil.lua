@@ -16,15 +16,9 @@ return {
       end,
     },
     keymaps = {
-      -- Personal navigation habits, mirroring vim's native jump pair: `gd`
-      -- jumps into something, `<C-o>` jumps back out. Here `gd` descends into
-      -- the entry under the cursor (a directory -> enter it; a file -> open
-      -- it, like <CR>), and `<C-o>` goes back up to the parent directory.
-      --
-      -- These are oil-buffer-local, so they don't clobber NvChad's LSP `gd`
-      -- (Go to definition), which only binds on buffers an LSP attaches to —
-      -- and Copilot is disabled on `oil` (see lua/plugins/copilot.lua), so no
-      -- LSP attaches here at all.
+      -- Navigation: `gd` to enter dir/file, `<C-o>` to go to parent.
+      -- These buffer-local mappings won't conflict with global LSP `gd`
+      -- because LSPs do not attach to oil buffers (buftype=acwrite).
       ["gd"] = { "actions.select", mode = "n", desc = "Enter dir / open file" },
       ["<C-o>"] = { "actions.parent", mode = "n", desc = "Go to parent dir" },
     },

@@ -84,7 +84,8 @@ Both travel with the plugin, but they are not interchangeable — pick by
   and unmaps on unload.
 - **`opts.keymap`** — the key is *consumed by the plugin's own state machine*,
   where routing it through `keys` would bypass internal logic (e.g. blink's
-  `<Tab>`/`<CR>` accept/reject coordination, copilot's suggestion trigger). The
+  `<Tab>`/`<CR>` accept/reject coordination, where `<Tab>` chains snippet jump →
+  sidekick NES → native inline completion). The
   plugin reads and sets these itself; we only feed it config.
 
 Test: does the key fire a plugin API we call, or does the plugin intercept the

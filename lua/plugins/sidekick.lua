@@ -32,6 +32,15 @@ return {
         enabled = true,
       },
     },
+    -- The Copilot LSP reports "User not signed in" at ERROR level, which sidekick
+    -- turns into a `:LspCopilotSignIn` notification (lua/sidekick/status.lua).
+    -- We don't want that prompt nagging on every buffer when we haven't signed in,
+    -- so raise the status threshold to OFF.
+    copilot = {
+      status = {
+        level = vim.log.levels.OFF,
+      },
+    },
   },
   keys = {
     {

@@ -21,9 +21,11 @@ return {
   -- file open independently.
   event = "VeryLazy",
   opts = {
-    -- Defaults are sensible; NES is enabled out of the box. The CLI sessions are
-    -- run inside a terminal multiplexer so they survive Neovim restarts. tmux is
-    -- installed on this machine (zellij is also present if preferred).
+    nes = {
+      ---@type boolean|fun(buf:integer):boolean?
+      enabled = true,
+    },
+    ---@class sidekick.cli.Mux
     cli = {
       mux = {
         backend = "tmux",

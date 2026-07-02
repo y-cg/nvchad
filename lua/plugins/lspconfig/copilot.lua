@@ -18,11 +18,26 @@ return {
 
   -- Skip excluded filetypes; otherwise attach (works in non-git dirs too,
   -- since copilot sets no `workspace_required`).
+  --
+  -- We must always hand on_dir() a non-nil path. vim.lsp defers the actual
+  -- client start with vim.schedule (see vim/lsp.lua ~564), and by the time it
+  -- runs the original bufnr may be gone — e.g. suda reopens a read-only file
+  -- (a symlink into the nix store, which is read-only) as a fresh suda://
+  -- buffer and wipes the original. If we return nil here, config.root_dir stays
+  -- nil and vim.lsp.start() retries `vim.fs.root(bufnr, root_markers)` on the
+  -- now-invalid bufnr, raising "Invalid buffer id". Fall back to the file's
+  -- directory (or cwd) so root_dir is always set and that retry is skipped.
   root_dir = function(bufnr, on_dir)
     if vim.tbl_contains(excluded_filetypes, vim.bo[bufnr].filetype) then
       return
     end
-    on_dir(vim.fs.root(bufnr, { ".git" }))
+
+    local root = vim.fs.root(bufnr, { ".git" })
+    if not root then
+      local name = vim.api.nvim_buf_get_name(bufnr)
+      root = (name ~= "" and vim.fs.dirname(name)) or vim.fn.getcwd()
+    end
+    on_dir(root)
   end,
 
   on_attach = function(client, bufnr)

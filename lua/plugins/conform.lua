@@ -21,6 +21,7 @@ return {
       css = { "prettier" },
       html = { "prettier" },
       nix = { "nixfmt" },
+      toml = { "taplo" },
     },
 
     format_on_save = {

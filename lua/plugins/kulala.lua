@@ -81,6 +81,15 @@ return {
     -- Keymaps live in `keys` above (slice ownership / lazy unload). Keep
     -- kulala's own global set off so we don't double-bind <leader>k*.
     global_keymaps = false,
+    ui = {
+      -- Kulala forces indent folding on its response window. Keep response
+      -- folds available, but show them expanded when the window opens.
+      win_opts = {
+        wo = {
+          foldlevel = 99,
+        },
+      },
+    },
     -- Let the general window-navigation mappings own <C-h>/<C-l> even in
     -- Kulala's UI buffer. `false` removes Kulala's buffer-local tab bindings
     -- instead of shadowing the global mappings with <Nop>.

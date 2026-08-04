@@ -81,20 +81,12 @@ return {
     -- Keymaps live in `keys` above (slice ownership / lazy unload). Keep
     -- kulala's own global set off so we don't double-bind <leader>k*.
     global_keymaps = false,
-    -- H/B switch directly to the common response panes. Keep <C-h>/<C-l>
-    -- buffer-local as no-ops so neither Kulala's pane controls nor the global
-    -- window-navigation mappings apply in the response buffer.
+    -- Let the general window-navigation mappings own <C-h>/<C-l> even in
+    -- Kulala's UI buffer. `false` removes Kulala's buffer-local tab bindings
+    -- instead of shadowing the global mappings with <Nop>.
     kulala_keymaps = {
-      ["Previous tab"] = {
-        "<C-h>",
-        "<Nop>",
-        mode = { "n" },
-      },
-      ["Next tab"] = {
-        "<C-l>",
-        "<Nop>",
-        mode = { "n" },
-      },
+      ["Previous tab"] = false,
+      ["Next tab"] = false,
       ["Show verbose"] = {
         "<leader>kv",
         function()

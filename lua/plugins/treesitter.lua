@@ -6,6 +6,7 @@ return {
 
   {
     "romus204/tree-sitter-manager.nvim",
+    branch = "develop",
     -- Must load at startup: lazy-loading on BufReadPost misses the first FileType
     -- event, so highlighting only appears after a later trigger (e.g. :w).
     lazy = false,

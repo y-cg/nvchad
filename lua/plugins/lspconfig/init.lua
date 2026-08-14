@@ -74,6 +74,7 @@ return {
       r_language_server = {},
       basedpyright = {},
       gopls = {},
+      jsonnet_ls = {},
       -- Protobuf / Buf workspace: `buf` ships its own LSP (`buf lsp serve`)
       buf_ls = require "plugins.lspconfig.buf",
       -- GitHub Copilot: drives native inline completion + sidekick.nvim NES.

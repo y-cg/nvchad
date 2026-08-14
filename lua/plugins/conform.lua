@@ -22,6 +22,7 @@ return {
       html = { "prettier" },
       nix = { "nixfmt" },
       toml = { "taplo" },
+      jsonnet = { "jsonnetfmt" },
     },
 
     format_on_save = {

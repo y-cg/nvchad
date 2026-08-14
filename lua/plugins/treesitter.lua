@@ -28,6 +28,7 @@ return {
         "json",
         "toml",
         "rust",
+        "jsonnet",
       },
     },
     config = function(_, opts)

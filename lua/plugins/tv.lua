@@ -58,6 +58,13 @@ return {
         end,
         desc = "Git commits (tv)",
       },
+      {
+        "<leader>fs",
+        function()
+          require("tv").tv_channel "definitions"
+        end,
+        desc = "Find symbols / definitions (tv)",
+      },
     },
 
     -- opts is a function because handlers need require("tv").handlers
@@ -134,6 +141,22 @@ return {
                   vim.cmd("tabnew | terminal git show " .. vim.fn.shellescape(entries[1]))
                 end
               end,
+              ["<C-y>"] = h.copy_to_clipboard,
+            },
+          },
+
+          -- ----------------------------------------------------------------------
+          -- Channel: definitions — AST symbol search (via ast-grep)
+          -- ----------------------------------------------------------------------
+          -- Cable emits standard `path:line:col\ttype\tname\tsignature` entries.
+          -- Directly compatible with tv.nvim's built-in `open_at_line` handler.
+          definitions = {
+            args = { "--no-remote", "--no-status-bar", "--preview-size", "60" },
+            handlers = {
+              ["<CR>"] = h.open_at_line,
+              ["<C-q>"] = h.send_to_quickfix,
+              ["<C-x>"] = h.open_in_split,
+              ["<C-v>"] = h.open_in_vsplit,
               ["<C-y>"] = h.copy_to_clipboard,
             },
           },

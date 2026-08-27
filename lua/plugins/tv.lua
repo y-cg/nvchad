@@ -24,32 +24,11 @@ return {
 
     keys = {
       {
-        "<leader><leader>",
-        function()
-          require("tv").tv_channel "files"
-        end,
-        desc = "Find files (tv)",
-      },
-      {
         "<leader>ff",
         function()
           require("tv").tv_channel "files"
         end,
         desc = "Find files (tv)",
-      },
-      {
-        "<leader>fa",
-        function()
-          require("tv").tv_channel "files"
-        end,
-        desc = "Find files (tv)",
-      },
-      {
-        "<leader>fw",
-        function()
-          require("tv").tv_channel "text"
-        end,
-        desc = "Live grep (tv)",
       },
       {
         "<leader>cm",

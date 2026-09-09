@@ -12,6 +12,7 @@
   "kulala.nvim": { "branch": "main", "commit": "232a9939919fe9bc88d573bce92de50f2f160c60" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lazydev.nvim": { "branch": "main", "commit": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d" },
+  "lean.nvim": { "branch": "main", "commit": "5a2c1dff42ca1055dc8977f1ad3217e42ce72659" },
   "leap.nvim": { "branch": "main", "commit": "38af0ab56c6eb8757ee6006dd13ab79c2bc11a49" },
   "mason.nvim": { "branch": "main", "commit": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d" },
   "menu": { "branch": "main", "commit": "7a0a4a2896b715c066cfbe320bdc048091874cc6" },

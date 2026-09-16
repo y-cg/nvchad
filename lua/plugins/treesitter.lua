@@ -13,6 +13,16 @@ return {
     cmd = { "TSManager", "TSInstall", "TSUninstall", "TSUpdate" },
     opts = {
       auto_install = true,
+      -- Custom grammars not in the plugin's built-in repos.lua.
+      languages = {
+        numbat = {
+          install_info = {
+            url = "https://github.com/Devin-Yeung/tree-sitter-numbat",
+            -- Copy queries/ from the cloned repo into site/queries/numbat/.
+            queries = "queries",
+          },
+        },
+      },
       ensure_installed = {
         "c",
         "lua",
@@ -30,6 +40,8 @@ return {
         "toml",
         "rust",
         "jsonnet",
+        -- .nbt files are detected as filetype `numbat` by Neovim itself.
+        "numbat",
       },
     },
     config = function(_, opts)

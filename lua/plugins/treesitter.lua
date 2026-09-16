@@ -19,6 +19,7 @@ return {
           install_info = {
             url = "https://github.com/Devin-Yeung/tree-sitter-numbat",
             -- Copy queries/ from the cloned repo into site/queries/numbat/.
+            use_repo_queries = true,
             queries = "queries",
           },
         },

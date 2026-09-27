@@ -14,6 +14,9 @@ M.base46 = {
   -- },
 }
 
+-- noice's auto_open handles signatures without NvChad's focus-stealing autocmd.
+M.lsp = { signature = false }
+
 -- M.nvdash = { load_on_startup = true }
 -- M.ui = {
 --       tabufline = {

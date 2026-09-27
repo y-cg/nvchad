@@ -50,6 +50,13 @@ return {
       end,
       desc = "Floating diagnostic",
     },
+    {
+      "gK",
+      function()
+        vim.lsp.buf.signature_help()
+      end,
+      desc = "Signature help",
+    },
   },
 
   config = function()

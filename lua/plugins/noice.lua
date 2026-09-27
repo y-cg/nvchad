@@ -22,6 +22,37 @@ return {
     notify = { enabled = true },
     cmdline = { enabled = true, view = "cmdline" },
     presets = { lsp_doc_border = true },
+
+    -- Avoid per-keystroke progress cards; NvChad's statusline shows LSP progress.
+    lsp = { progress = { enabled = false } },
+  },
+
+  -- `<C-b>` is Herdr's prefix; use `<C-d>`/`<C-u>` for doc scrolling.
+  keys = {
+    {
+      "<C-d>",
+      function()
+        if not require("noice.lsp").scroll(4) then
+          return "<C-d>"
+        end
+      end,
+      mode = { "n", "i", "s" },
+      expr = true,
+      silent = true,
+      desc = "Scroll LSP doc down",
+    },
+    {
+      "<C-u>",
+      function()
+        if not require("noice.lsp").scroll(-4) then
+          return "<C-u>"
+        end
+      end,
+      mode = { "n", "i", "s" },
+      expr = true,
+      silent = true,
+      desc = "Scroll LSP doc up",
+    },
   },
 
   config = function(_, opts)

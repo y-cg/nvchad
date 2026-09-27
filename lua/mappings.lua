@@ -20,12 +20,23 @@ map("n", "<leader>ws", "<cmd>split<CR>", { desc = "Split window horizontally" })
 map("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Split window vertically" })
 
 map("n", "<Esc>", function()
+  -- `docs.hide` also closes noice's separate border window.
+  local ok, docs = pcall(require, "noice.lsp.docs")
+  if ok and docs._messages then
+    for _, kind in ipairs { "hover", "signature" } do
+      local msg = docs._messages[kind]
+      if msg and msg:win() then
+        docs.hide(msg)
+      end
+    end
+  end
+
   if vim.api.nvim_mcursor ~= nil then
     local ns = vim.api.nvim_create_namespace "nvim.multicursor"
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
   end
   vim.cmd "nohlsearch"
-end, { desc = "Clear search highlights and multicursors" })
+end, { desc = "Close LSP docs, clear search highlights and multicursors" })
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 
 map("n", ";", ":", { desc = "CMD enter command mode" })

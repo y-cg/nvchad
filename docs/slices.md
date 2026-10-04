@@ -29,4 +29,4 @@ A mapping for a module that ships inside another slice lives on that slice.
 
 Plugin configuration stays on the slice. `configs/` holds startup config outside any plugin's options. Feature behavior lives on a slice; `init.lua` is bootstrap.
 
-Neovim options live in `options.lua`. base46 theme config lives in `chadrc.lua`, the name nvchad/ui reads.
+Neovim options live in `options.lua`. base46 theme config lives in `chadrc.lua`, the name nvchad/ui reads. Compiled highlight caches are applied from `configs/base46-highlights.lua`.

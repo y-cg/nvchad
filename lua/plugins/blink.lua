@@ -37,58 +37,53 @@ return {
 
   opts_extend = { "sources.default" },
 
-  opts = function()
-    dofile(vim.g.base46_cache .. "blink")
+  opts = {
+    snippets = { preset = "luasnip" },
+    cmdline = { enabled = true },
+    appearance = { nerd_font_variant = "normal" },
+    fuzzy = { implementation = "prefer_rust" },
 
-    return {
-      snippets = { preset = "luasnip" },
-      cmdline = { enabled = true },
-      appearance = { nerd_font_variant = "normal" },
-      fuzzy = { implementation = "prefer_rust" },
-
-      sources = {
-        default = { "lsp", "snippets", "buffer", "path" },
-        per_filetype = {
-          lua = { inherit_defaults = true, "lazydev" },
-        },
-        providers = {
-          lazydev = {
-            name = "LazyDev",
-            module = "lazydev.integrations.blink",
-            -- Rank require(...) and ---@module completions above plain LuaLS items.
-            score_offset = 100,
-          },
+    sources = {
+      default = { "lsp", "snippets", "buffer", "path" },
+      per_filetype = {
+        lua = { inherit_defaults = true, "lazydev" },
+      },
+      providers = {
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          -- Rank require(...) and ---@module completions above plain LuaLS items.
+          score_offset = 100,
         },
       },
+    },
 
-      keymap = {
-        preset = "default",
-        ["<CR>"] = { "accept", "fallback" },
-        ["<Up>"] = { "select_prev", "fallback" },
-        ["<Down>"] = { "select_next", "fallback" },
-        -- First handler that consumes the key wins. Menu accept is intentionally absent.
-        ["<Tab>"] = {
-          "snippet_forward",
-          function()
-            return require("sidekick").nes_jump_or_apply()
-          end,
-          function()
-            return vim.lsp.inline_completion.get()
-          end,
-          "fallback",
-        },
-        ["<S-Tab>"] = false,
+    keymap = {
+      preset = "default",
+      ["<CR>"] = { "accept", "fallback" },
+      ["<Up>"] = { "select_prev", "fallback" },
+      ["<Down>"] = { "select_next", "fallback" },
+      -- First handler that consumes the key wins. Menu accept is intentionally absent.
+      ["<Tab>"] = {
+        "snippet_forward",
+        function()
+          return require("sidekick").nes_jump_or_apply()
+        end,
+        function()
+          return vim.lsp.inline_completion.get()
+        end,
+        "fallback",
       },
+      ["<S-Tab>"] = false,
+    },
 
-      completion = {
-        ghost_text = { enabled = false },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-          window = { border = "single" },
-        },
-        menu = require("nvchad.blink").menu,
+    completion = {
+      ghost_text = { enabled = false },
+      documentation = {
+        auto_show = true,
+        auto_show_delay_ms = 200,
+        window = { border = "single" },
       },
-    }
-  end,
+    },
+  },
 }

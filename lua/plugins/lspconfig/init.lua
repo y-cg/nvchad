@@ -29,8 +29,6 @@ return {
   },
 
   config = function()
-    dofile(vim.g.base46_cache .. "lsp")
-
     local severity = vim.diagnostic.severity
     vim.diagnostic.config {
       virtual_text = { prefix = "" },

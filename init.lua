@@ -22,10 +22,8 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
--- base46 writes these as bytecode; apply them after plugins load.
-dofile(vim.g.base46_cache .. "defaults")
+-- After lazy.setup. Plugin specs do not apply these caches.
 require("configs.base46-highlights").load()
-dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
 require "mappings"

@@ -1,6 +1,9 @@
 # nvchad-dev — configuration glossary (CONTEXT.md)
 
-This config is built on NvChad v2.5. The terms below form its domain language.
+Theme, statusline, and tabufline come from `base46` and `nvchad/ui`, loaded as
+ordinary slices under `lua/plugins/`. The NvChad starter
+(`NvChad/NvChad`, `import = "nvchad.plugins"`) is not part of startup. The
+terms below form the domain language.
 Use them consistently so future readers (and your future self) share the same
 vocabulary.
 
@@ -91,16 +94,14 @@ Both travel with the plugin, but they are not interchangeable — pick by
 Test: does the key fire a plugin API we call, or does the plugin intercept the
 key itself? Former → `keys`; latter → `opts.keymap`.
 
-### Mappings for a plugin bundled inside another
+### Mappings for a UI module that has no slice of its own
 
-Some plugins ship bundled inside a parent with no standalone lazy spec (e.g.
-NvChad bundles tabufline and Comment). Their mappings live in the **parent
-slice's `keys`** (here `nvchad.lua`), grouped under a labelled section. This
-passes the delete test: removing the parent removes the bundled component and
-its keys together.
+tabufline ships inside `nvchad/ui` and has no standalone lazy spec. Its
+mappings live in that slice's `keys` (`lua/plugins/nvchad.lua`). Removing the
+ui slice removes the keys with it.
 
-Promote to a dedicated slice only when a bundled component's key count grows
-enough to hurt the parent file's readability — not by line count alone.
+The comment toggle (`<leader>/` → `gcc` / `gc`) calls Neovim's built-in
+comment operator, so it lives in `mappings.lua`, not on the ui slice.
 
 ### Mappings that call a builtin API but only matter under a plugin
 
@@ -121,16 +122,15 @@ mapping belongs to that slice's `keys` even though the API itself is a builtin.
   e.g. `lazy.lua` (lazy.nvim's own settings) and `neovide.lua` (GUI
   integration). Plugin opts always go in their slice.
 - **`init.lua`** — pure bootstrap: leader/base46 cache, lazy clone,
-  `lazy.setup`, theme load, entry-module requires. No concrete feature logic
+  `lazy.setup({ import = "plugins" })`, theme-cache load, `options`,
+  `mappings`. No NvChad starter spec and no concrete feature logic
   (features go in slices; GUI goes in `configs/`).
-- **`lua/mappings.lua`** — editor-global mappings. This file deliberately does
-  **not** `require "nvchad.mappings"`: we keep only the small subset of general
-  mappings we actually use (window navigation, save, `jk`→ESC, `;`→`:`), rather
-  than inheriting NvChad's full default set. Plugin-specific mappings live in
-  their slice's `keys` (see "Mapping ownership" above); add a general mapping
-  here only when no single plugin owns it.
-- **`lua/options.lua`** / `lua/chadrc.lua` — Neovim options / NvChad theme
-  configuration.
+- **`lua/mappings.lua`** — editor-global mappings (window navigation, save,
+  `jk`→ESC, `;`→`:`, the built-in comment toggle). Plugin-specific mappings
+  live in their slice's `keys` (see "Mapping ownership" above); add a general
+  mapping here only when no single plugin owns it.
+- **`lua/options.lua`** / `lua/chadrc.lua` — Neovim options / base46 theme
+  configuration (`chadrc.lua` is read by `nvchad/ui`).
 
 ## Load semantics
 

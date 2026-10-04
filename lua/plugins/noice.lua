@@ -11,7 +11,7 @@ return {
   dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
 
   -- noice zeroes cmdheight during setup(), collapsing the blank line between
-  -- NvChad's statusline and the outer tmux statusline. `init` is too early
+  -- the statusline and the outer tmux statusline. `init` is too early
   -- (overwritten by setup); `vim.schedule` after setup lands after noice's
   -- own scheduled work and restores the gap.
   init = function()

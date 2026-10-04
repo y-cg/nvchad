@@ -16,7 +16,7 @@ return {
   -- navigation lands in a richer split view.
   opts = {
     -- Open the status buffer in a full tab instead of a split — closer to
-    -- fullscreen Magit and avoids competing with NvChad's tabufline.
+    -- fullscreen Magit and avoids competing with the tabufline.
     kind = "tab",
 
     -- No extra confirmation dialog when staging hunks/lines.

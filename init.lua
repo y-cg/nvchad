@@ -20,28 +20,17 @@ vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
 
--- load plugins
--- NvChad must be declared here at the top level so lazy can bootstrap it and
--- add it to the runtimepath before attempting to import "nvchad.plugins".
--- A sibling merge spec in lua/plugins/nvchad.lua adds keys without repeating
--- this bootstrapping concern.
+-- Feature slices under lua/plugins/ are the whole plugin graph. base46 and
+-- nvchad/ui are ordinary slices there; nothing imports the NvChad starter.
 require("lazy").setup({
-  {
-    "NvChad/NvChad",
-    lazy = false,
-    branch = "v2.5",
-    import = "nvchad.plugins",
-  },
-
   { import = "plugins" },
 }, lazy_config)
 
--- load theme
+-- Theme caches are bytecode written by base46. Apply them after plugins load
+-- so the statusline (set by nvchad/ui) and treesitter captures pick up colors.
 dofile(vim.g.base46_cache .. "defaults")
 require("configs.base46-highlights").load()
 dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
-require "nvchad.autocmds"
-
 require "mappings"

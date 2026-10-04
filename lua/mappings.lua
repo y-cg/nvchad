@@ -4,12 +4,7 @@ local map = vim.keymap.set
 -- General editor mappings
 -- ============================================================================
 -- Mappings not owned by any plugin slice: builtins, editor habits (jk, ;),
--- and window navigation.
---
--- Deliberately does NOT `require "nvchad.mappings"`: we keep only the general
--- mappings we actually use instead of inheriting NvChad's full default set.
--- Plugin-specific mappings live in their slice's `keys` field; see CONTEXT.md
--- "Mapping ownership".
+-- window navigation, and the built-in comment operator.
 
 map("n", "<C-h>", "<C-w>h", { desc = "Switch window left" })
 map("n", "<C-l>", "<C-w>l", { desc = "Switch window right" })
@@ -41,6 +36,10 @@ map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
+
+-- Neovim's built-in comment operator. Previously mapped in the NvChad slice.
+map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
+map("x", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 
 -- ============================================================================
 -- Multicursor (Neovim 0.13+ native multicursor)

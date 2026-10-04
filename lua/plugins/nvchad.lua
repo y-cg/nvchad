@@ -1,61 +1,77 @@
--- ==============================================================================
--- NvChad — base distribution
--- ==============================================================================
+-- base46 + nvchad/ui — theme, statusline, tabufline.
 --
--- NvChad is loaded as a regular plugin slice so all its configuration lives in
--- one place: the spec, its bundled plugin imports, and the mappings for the
--- NvChad-bundled UI components (tabufline, Comment) that have no standalone
--- slice of their own.
+-- These are ordinary plugin slices. The NvChad starter (NvChad/NvChad and
+-- `import = "nvchad.plugins"`) is not loaded, so Telescope, nvim-tree, mason,
+-- nvim-cmp, and nvim-treesitter do not come along.
+--
+-- chadrc.lua is still read by nvchad/ui (via nvconfig). vim.g.base46_cache is
+-- set in init.lua before lazy.setup, which is what the highlight caches need.
 
--- The bootstrap spec (lazy=false, branch, import) lives in init.lua because
--- NvChad must be on the runtimepath before "nvchad.plugins" can be resolved.
--- This merge spec adds keys only — lazy merges the two specs automatically.
----@type LazySpec
+---@type LazySpec[]
 return {
-  "NvChad/NvChad",
+  {
+    "nvchad/base46",
+    lazy = false,
+    build = function()
+      require("base46").load_all_highlights()
+    end,
+  },
 
-  -- -------------------------------------------------------------------------
-  -- Tabufline and Comment mappings
-  -- -------------------------------------------------------------------------
-  -- Both are bundled inside NvChad with no standalone lazy spec, so their
-  -- mappings live here rather than in a dedicated slice.
-  keys = {
-    {
-      "<tab>",
-      function()
-        require("nvchad.tabufline").next()
-      end,
-      desc = "Next buffer",
+  {
+    "nvchad/ui",
+    lazy = false,
+    dependencies = { "nvchad/base46" },
+    config = function()
+      require "nvchad"
+    end,
+
+    -- Tabufline has no slice of its own; the keys travel with the ui plugin.
+    keys = {
+      {
+        "<tab>",
+        function()
+          require("nvchad.tabufline").next()
+        end,
+        desc = "Next buffer",
+      },
+      {
+        "<S-tab>",
+        function()
+          require("nvchad.tabufline").prev()
+        end,
+        desc = "Prev buffer",
+      },
+      {
+        "<S-L>",
+        function()
+          require("nvchad.tabufline").next()
+        end,
+        desc = "Next buffer",
+      },
+      {
+        "<S-H>",
+        function()
+          require("nvchad.tabufline").prev()
+        end,
+        desc = "Prev buffer",
+      },
+      {
+        "<leader>x",
+        function()
+          require("nvchad.tabufline").close_buffer()
+        end,
+        desc = "Close buffer",
+      },
     },
-    {
-      "<S-tab>",
-      function()
-        require("nvchad.tabufline").prev()
-      end,
-      desc = "Prev buffer",
-    },
-    {
-      "<S-L>",
-      function()
-        require("nvchad.tabufline").next()
-      end,
-      desc = "Next buffer",
-    },
-    {
-      "<S-H>",
-      function()
-        require("nvchad.tabufline").prev()
-      end,
-      desc = "Prev buffer",
-    },
-    {
-      "<leader>x",
-      function()
-        require("nvchad.tabufline").close_buffer()
-      end,
-      desc = "Close buffer",
-    },
-    { "<leader>/", "gcc", desc = "Toggle comment", remap = true },
-    { "<leader>/", "gc", desc = "Toggle comment", remap = true, mode = "v" },
+  },
+
+  -- Icon theme. opts run when some plugin first requires devicons, which is
+  -- after nvchad/ui is on the runtimepath (ui is lazy = false).
+  {
+    "nvim-tree/nvim-web-devicons",
+    opts = function()
+      dofile(vim.g.base46_cache .. "devicons")
+      return { override = require "nvchad.icons.devicons" }
+    end,
   },
 }

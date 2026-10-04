@@ -22,10 +22,11 @@
 --             buf_ls registers its config filetypes). Defaults to absent = no-op.
 -- Everything else in an entry is forwarded to `vim.lsp.config` verbatim.
 --
--- Language-specific entries that are large enough to warrant their own file
--- live in siblings that RETURN their entry (pure data, no side effects, no
--- require-order coupling):
+-- Language-specific entries that aren't the stock `name = {}` live in siblings
+-- that RETURN their entry (pure data, no side effects, no require-order
+-- coupling):
 --   buf.lua   — buf_ls: registers buf workspace/config filetypes via `setup`
+--   lua.lua   — lua_ls: LuaJIT runtime and vim / luv workspace libraries
 --   ocaml.lua — ocamllsp: extra inlay-hint / codelens settings
 ---@type LazySpec
 return {
@@ -60,8 +61,32 @@ return {
   },
 
   config = function()
-    -- Load NvChad defaults (lua_ls, etc.)
-    require("nvchad.configs.lspconfig").defaults()
+    dofile(vim.g.base46_cache .. "lsp")
+
+    local severity = vim.diagnostic.severity
+    vim.diagnostic.config {
+      virtual_text = { prefix = "" },
+      signs = {
+        text = {
+          [severity.ERROR] = "󰅙",
+          [severity.WARN] = "",
+          [severity.INFO] = "󰋼",
+          [severity.HINT] = "󰌵",
+        },
+      },
+      underline = true,
+      float = { border = "single" },
+    }
+
+    -- base46's treesitter colors and LSP semantic tokens paint the same
+    -- captures. Keep tokens off so the theme stays the one source of color.
+    vim.lsp.config("*", {
+      on_init = function(client, _)
+        if client:supports_method "textDocument/semanticTokens" then
+          client.server_capabilities.semanticTokensProvider = nil
+        end
+      end,
+    })
 
     -- The registry. Simple servers are `name = {}`; servers with their own
     -- file pull their entry in by key so the full server list stays readable
@@ -70,7 +95,7 @@ return {
       html = {},
       cssls = {},
       jsonls = {},
-      lua_ls = {},
+      lua_ls = require "plugins.lspconfig.lua",
       clangd = {},
       rust_analyzer = {},
       nixd = {},
@@ -90,10 +115,21 @@ return {
       copilot = require "plugins.lspconfig.copilot",
     }
 
-    local nvlsp = require "nvchad.configs.lspconfig"
+    -- Buffer-local LSP jumps. These used to come from nvchad.configs.lspconfig.
+    -- Kept: gd / gD / <leader>D — there is no Neovim default for them.
+    -- Not carried over (no command-history evidence, and they are not part of
+    -- daily editing): <leader>wa / <leader>wr / <leader>wl (workspace folders)
+    -- and <leader>ra (NvChad renamer). Rename is Neovim's `grn`, which prompts
+    -- through snacks' vim.ui.input.
+    local on_attach = function(_, bufnr)
+      local function opts(desc)
+        return { buffer = bufnr, desc = desc }
+      end
 
-    local on_attach = function(client, bufnr)
-      nvlsp.on_attach(client, bufnr)
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
+      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
+      vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
+
       -- https://github.com/mrcjkb/rustaceanvim/discussions/46#discussioncomment-7636177
       -- https://gist.github.com/Chattille/adbd1f296b03bc3f85bb7f8d6f648c6f
       vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {

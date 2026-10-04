@@ -33,8 +33,8 @@ slice has become hard to maintain, or it's obvious a part wants to live on its
 own, just split it. Don't overthink the bar.
 
 `lspconfig` is the one directory in the tree: its per-server entries
-(`buf.lua`, `ocaml.lua`) are independently meaningful pure-data modules that
-clearly belonged in their own files. `tv` and `blink` are long but stay single
+(`buf.lua`, `lua.lua`, `ocaml.lua`) are independently meaningful pure-data
+modules that clearly belonged in their own files. `tv` and `blink` are long but stay single
 files because each is one cohesive config block with nothing crying out to be
 extracted. When in doubt, leave it one file — a premature split scatters
 complexity and fails the delete test.

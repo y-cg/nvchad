@@ -1,9 +1,3 @@
--- noice.nvim — floating messages / cmdline / notifications.
--- Replaces the bottom echo area with dismissable top-right cards (via
--- nvim-notify), so transient errors don't vanish on the next redraw.
--- snacks.nvim's `notifier` is off (only `picker`/`input` enabled there),
--- so there's no second notifier competing for `vim.notify`.
-
 ---@type LazySpec
 return {
   "folke/noice.nvim",

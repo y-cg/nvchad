@@ -1,14 +1,3 @@
--- ==============================================================================
--- tv.nvim — picker (replaces Telescope)
--- ==============================================================================
---
--- tv.nvim is a thin wrapper around the `tv` (television) binary. The real
--- picker logic — file traversal, ignore handling, sorting, preview — all lives
--- in the Rust binary. The Lua side only configures layout and dispatches
--- selected entries to handler functions.
---
--- Picker mappings live in this slice's keys field below.
-
 ---@type LazySpec[]
 return {
   {
@@ -38,41 +27,18 @@ return {
       },
     },
 
-    -- opts is a function because handlers need require("tv").handlers
     opts = function()
       local h = require("tv").handlers
 
       return {
-        -- Landscape layout with a fullscreen floating window — width/height
-        -- are ratios of the editor size (see tv.nvim/lua/tv/window.lua),
-        -- so 1.0 makes the panel span the entire nvim screen (row/col land
-        -- at 0,0). Rounded border kept as decoration; it draws outside the
-        -- window geometry and does not shrink the usable area.
+        -- width/height are fractions of the editor. The border is drawn outside that box.
         layout = "landscape",
         window = { width = 1.0, height = 1.0, border = "rounded", title_pos = "center" },
 
-        -- ----------------------------------------------------------------------
-        -- Per-channel overrides
-        -- ----------------------------------------------------------------------
-        -- These MUST live under `channels = { ... }`: tv.nvim reads
-        -- `config.current.channels[channel]` (see tv.nvim/lua/tv/config.lua,
-        -- `get_channel_config` and `M.defaults`). Placing them at the top
-        -- level silently no-ops — args/handlers never reach the tv binary,
-        -- which is why `--preview-size 50` had no effect until now.
+        -- Read only from `channels`; a top-level field is ignored.
+        -- `args` replaces that channel's arguments, so the shared flags are repeated here.
         channels = {
-          -- ----------------------------------------------------------------------
-          -- Channel: files — equivalent to Telescope find_files
-          -- ----------------------------------------------------------------------
-          -- <CR> opens in the current window; the rest carry over the behavior
-          -- we had with Telescope: send to quickfix, horizontal/vertical split,
-          -- copy path to system clipboard.
           files = {
-            -- Split the picker 50/50 between the results list and the preview
-            -- panel. `--preview-size` is the preview's share of the screen
-            -- width in percent (1-99); the channel default is 70. The
-            -- --no-remote / --no-status-bar flags are repeated because
-            -- tv.nvim replaces the channel's args wholesale when this field
-            -- is set.
             args = { "--no-remote", "--no-status-bar", "--preview-size", "60" },
             handlers = {
               ["<CR>"] = h.open_as_files,
@@ -83,11 +49,6 @@ return {
             },
           },
 
-          -- ----------------------------------------------------------------------
-          -- Channel: text — equivalent to Telescope live_grep
-          -- ----------------------------------------------------------------------
-          -- open_at_line jumps to the file:line of the grep match; the rest
-          -- mirrors the files channel.
           text = {
             args = { "--no-remote", "--no-status-bar", "--preview-size", "60" },
             handlers = {
@@ -99,13 +60,8 @@ return {
             },
           },
 
-          -- ----------------------------------------------------------------------
-          -- Channel: git-log — equivalent to Telescope git_commits
-          -- ----------------------------------------------------------------------
-          -- tv has no built-in handler to show a commit diff in a buffer, so we
-          -- open a new tab running `git show <hash>` in a terminal. Intentionally
-          -- lightweight — can be grown into a real previewer later.
           ["git-log"] = {
+            -- No built-in handler shows a commit.
             handlers = {
               ["<CR>"] = function(entries)
                 if entries[1] then
@@ -116,11 +72,6 @@ return {
             },
           },
 
-          -- ----------------------------------------------------------------------
-          -- Channel: definitions — AST symbol search (via ast-grep)
-          -- ----------------------------------------------------------------------
-          -- Cable emits standard `path:line:col\ttype\tname\tsignature` entries.
-          -- Directly compatible with tv.nvim's built-in `open_at_line` handler.
           definitions = {
             args = { "--no-remote", "--no-status-bar", "--preview-size", "60" },
             handlers = {

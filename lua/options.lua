@@ -2,9 +2,6 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
--- Editor defaults previously inherited from nvchad.options. Kept verbatim
--- except the mason.nvim PATH injection, which left with the starter.
-
 o.laststatus = 3
 o.showmode = false
 o.splitkeep = "screen"

@@ -1,4 +1,3 @@
--- vim-wakatime — automatically track coding time with WakaTime
 ---@type LazySpec
 return {
   "wakatime/vim-wakatime",

@@ -1,13 +1,3 @@
--- ==============================================================================
--- fff.nvim — fast file finder
--- ==============================================================================
---
--- fff (freakin' fast fuzzy finder) is an index-backed file search engine with a
--- Rust core providing typo-resistant fuzzy path matching and frecency memory.
---
--- Mapping ownership: <leader><leader> and <leader>fw are owned by this slice.
--- Other pickers (files on \ff, git log, definitions, etc.) remain in tv.nvim.
-
 ---@type LazySpec
 return {
   "dmtrKovalenko/fff.nvim",

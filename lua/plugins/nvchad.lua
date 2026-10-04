@@ -1,12 +1,3 @@
--- base46 + nvchad/ui — theme, statusline, tabufline.
---
--- These are ordinary plugin slices. The NvChad starter (NvChad/NvChad and
--- `import = "nvchad.plugins"`) is not loaded, so Telescope, nvim-tree, mason,
--- nvim-cmp, and nvim-treesitter do not come along.
---
--- chadrc.lua is still read by nvchad/ui (via nvconfig). vim.g.base46_cache is
--- set in init.lua before lazy.setup, which is what the highlight caches need.
-
 ---@type LazySpec[]
 return {
   {
@@ -25,7 +16,6 @@ return {
       require "nvchad"
     end,
 
-    -- Tabufline has no slice of its own; the keys travel with the ui plugin.
     keys = {
       {
         "<tab>",
@@ -65,8 +55,7 @@ return {
     },
   },
 
-  -- Icon theme. opts run when some plugin first requires devicons, which is
-  -- after nvchad/ui is on the runtimepath (ui is lazy = false).
+  -- First require is after nvchad/ui (`lazy = false` above) is on the path.
   {
     "nvim-tree/nvim-web-devicons",
     opts = function()

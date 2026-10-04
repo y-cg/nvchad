@@ -1,4 +1,3 @@
--- render-markdown.nvim — inline markdown rendering (headings, code blocks, tables, callouts, checkboxes)
 ---@type LazySpec
 return {
   "MeanderingProgrammer/render-markdown.nvim",

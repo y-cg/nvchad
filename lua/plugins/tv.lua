@@ -7,18 +7,10 @@
 -- in the Rust binary. The Lua side only configures layout and dispatches
 -- selected entries to handler functions.
 --
--- This slice also disables Telescope: "switch to tv" and "drop telescope" are
--- two halves of the same decision, kept together so a future picker swap is
--- visible in one place.
---
 -- Picker mappings live in this slice's keys field below.
 
 ---@type LazySpec[]
 return {
-  -- Disable the Telescope spec pulled in by NvChad via `import = "nvchad.plugins"`.
-  -- Its <leader>f* mappings are explicitly remapped or no-op'd in lua/mappings.lua.
-  { "nvim-telescope/telescope.nvim", enabled = false },
-
   {
     "alexpasmantier/tv.nvim",
 

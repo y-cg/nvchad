@@ -1,9 +1,6 @@
 -- tree-sitter-manager — parser installer for Neovim 0.12+ native vim.treesitter
 ---@type LazySpec[]
 return {
-  -- Disable nvim-treesitter pulled in by NvChad via `import = "nvchad.plugins"`.
-  { "nvim-treesitter/nvim-treesitter", enabled = false },
-
   {
     "romus204/tree-sitter-manager.nvim",
     branch = "develop",

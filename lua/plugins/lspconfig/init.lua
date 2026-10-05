@@ -79,6 +79,7 @@ return {
       yamlls = {},
       marksman = {},
       r_language_server = {},
+      ts_ls = {},
       basedpyright = {},
       gopls = {},
       jsonnet_ls = {},

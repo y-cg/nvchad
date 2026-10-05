@@ -5,6 +5,12 @@ return {
   dependencies = { "MunifTanjim/nui.nvim" },
   config = function()
     require("hunk").setup({
+      keys = {
+        tree = {
+          expand_node = { "zo" },
+          collapse_node = { "zc" },
+        },
+      },
       hooks = {
         on_tree_mount = function(ctx)
           vim.api.nvim_set_option_value("wrap", false, { win = ctx.opts.winid })

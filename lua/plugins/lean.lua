@@ -3,7 +3,7 @@ return {
   "Julian/lean.nvim",
   event = { "BufReadPre *.lean", "BufNewFile *.lean" },
   ---@type lean.Config
-  opts = { -- see the manual for full configuration options
+  opts = {
     mappings = true,
   },
   config = function(_, opts)

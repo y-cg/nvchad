@@ -1,8 +1,8 @@
--- conform.nvim — multi-language formatter dispatcher
 ---@type LazySpec
 return {
   "stevearc/conform.nvim",
-  event = "BufWritePre", -- load before save to support format-on-save
+  -- Before the write, so format-on-save can run.
+  event = "BufWritePre",
   keys = {
     {
       "<leader>fm",
@@ -26,7 +26,6 @@ return {
     },
 
     format_on_save = {
-      -- Options forwarded to conform.format()
       timeout_ms = 500,
       lsp_fallback = true,
     },

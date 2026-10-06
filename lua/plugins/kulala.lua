@@ -1,17 +1,11 @@
--- kulala.nvim — HTTP/GraphQL/gRPC/WebSocket client for JetBrains .http files.
--- Lazy-loaded on .http/.rest buffers or the scratchpad/send keymaps below.
--- Needs Neovim 0.12+, curl, git, and tree-sitter-cli (all present here).
--- Kulala manages its own treesitter parser/queries and downloads kulala-core.
 ---@type LazySpec
 return {
   "mistweaverco/kulala.nvim",
-  -- Register session hooks so request history can restore after :source Session.
+  -- History is restored from these session hooks.
   event = { "SessionLoadPost", "VimLeavePre" },
   ft = { "http", "rest" },
   keys = {
-    -- Prefer <CR> in .http buffers (no leader chord). Leader maps use `k`
-    -- (kulala), not `r` — a failed `<leader>r…` chord falls through to
-    -- normal-mode `r` (replace-char), which feels like substitute.
+    -- A failed `<leader>r…` chord falls through to `r` (replace character).
     {
       "<CR>",
       function()
@@ -69,8 +63,7 @@ return {
     },
   },
   init = function()
-    -- Neovim does not map .http → filetype=http by default; without this,
-    -- `ft = { "http" }` never fires and highlighting/LSP stay off.
+    -- .http is not a default filetype, so `ft = "http"` would never match.
     vim.filetype.add {
       extension = {
         http = "http",
@@ -78,21 +71,18 @@ return {
     }
   end,
   opts = {
-    -- Keymaps live in `keys` above (slice ownership / lazy unload). Keep
-    -- kulala's own global set off so we don't double-bind <leader>k*.
+    -- Maps live in `keys`; kulala's own set would bind them again.
     global_keymaps = false,
     ui = {
-      -- Kulala forces indent folding on its response window. Keep response
-      -- folds available, but show them expanded when the window opens.
+      -- The response window opens with indent folds; start them expanded.
       win_opts = {
         wo = {
           foldlevel = 99,
         },
       },
     },
-    -- Let the general window-navigation mappings own <C-h>/<C-l> even in
-    -- Kulala's UI buffer. `false` removes Kulala's buffer-local tab bindings
-    -- instead of shadowing the global mappings with <Nop>.
+    -- `<C-h>` / `<C-l>` belong to window navigation. `false` removes the binding
+    -- instead of shadowing it with <Nop>.
     kulala_keymaps = {
       ["Previous tab"] = false,
       ["Next tab"] = false,

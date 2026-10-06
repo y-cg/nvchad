@@ -1,30 +1,47 @@
--- ==============================================================================
--- base46-highlights — orphaned NvChad syntax / treesitter theme caches
--- ==============================================================================
---
--- Causal chain (why this file exists):
---   Neovim 0.12+ ships built-in treesitter
---     → we replaced nvim-treesitter with tree-sitter-manager + vim.treesitter
---     → NvChad used to dofile these caches from nvim-treesitter opts
---     → that hook is gone, so we load them here instead
---
--- This is NOT parser install or vim.treesitter.start — it only applies NvChad
--- theme colors to highlight groups:
---   syntax     — classic groups (String, Keyword, Function, …)
---   treesitter — capture groups (@keyword, @string, @function, …)
---
--- Division of labour:
---   tree-sitter-manager  — install parsers, parse buffers, attach @ captures
---   this module          — define what color each @ capture uses in the theme
---
--- Must run after `defaults` in init.lua (see init.lua theme section).
+-- Highlight caches compiled by base46. Plugin specs do not dofile them.
 local M = {}
 
+local caches = {
+  "defaults",
+  "statusline",
+  "syntax",
+  "treesitter",
+  "blink",
+  "whichkey",
+  "devicons",
+  "lsp",
+  "git",
+  "blankline",
+  "tbline",
+}
+
+-- setup() copies IblChar, then replaces @ibl.scope.underline.*.
+local after_load = {
+  ["indent-blankline.nvim"] = { "blankline" },
+}
+
+local function apply(names)
+  for _, name in ipairs(names) do
+    local path = vim.g.base46_cache .. name
+    if vim.uv.fs_stat(path) then
+      dofile(path)
+    end
+  end
+end
+
 function M.load()
-  pcall(function()
-    dofile(vim.g.base46_cache .. "syntax")
-    dofile(vim.g.base46_cache .. "treesitter")
-  end)
+  apply(caches)
+
+  vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("base46-highlights", { clear = true }),
+    pattern = "LazyLoad",
+    callback = function(ev)
+      local names = after_load[ev.data]
+      if names then
+        apply(names)
+      end
+    end,
+  })
 end
 
 return M

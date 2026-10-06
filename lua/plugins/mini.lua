@@ -4,7 +4,7 @@ return {
 
   lazy = false,
 
-  -- Supplies queries/<lang>/textobjects.scm (@function.outer / @function.inner)
+  -- Provides the `@function` captures used below.
   dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 
   config = function()

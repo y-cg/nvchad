@@ -1,14 +1,12 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = "\\"
--- Disable Neovim 0.13+ built-in directory explorer to prevent conflicts with oil.nvim
+-- Disable the built-in directory explorer; it fights oil.
 vim.g.loaded_nvim_dir_plugin = 1
 
--- GUI integration is only loaded under Neovide; see lua/configs/neovide.lua
 if vim.g.neovide then
   require "configs.neovide"
 end
 
--- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 if not vim.uv.fs_stat(lazypath) then
@@ -20,28 +18,12 @@ vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
 
--- load plugins
--- NvChad must be declared here at the top level so lazy can bootstrap it and
--- add it to the runtimepath before attempting to import "nvchad.plugins".
--- A sibling merge spec in lua/plugins/nvchad.lua adds keys without repeating
--- this bootstrapping concern.
 require("lazy").setup({
-  {
-    "NvChad/NvChad",
-    lazy = false,
-    branch = "v2.5",
-    import = "nvchad.plugins",
-  },
-
   { import = "plugins" },
 }, lazy_config)
 
--- load theme
-dofile(vim.g.base46_cache .. "defaults")
+-- After lazy.setup. Plugin specs do not apply these caches.
 require("configs.base46-highlights").load()
-dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
-require "nvchad.autocmds"
-
 require "mappings"

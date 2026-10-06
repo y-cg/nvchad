@@ -1,16 +1,5 @@
 local map = vim.keymap.set
 
--- ============================================================================
--- General editor mappings
--- ============================================================================
--- Mappings not owned by any plugin slice: builtins, editor habits (jk, ;),
--- and window navigation.
---
--- Deliberately does NOT `require "nvchad.mappings"`: we keep only the general
--- mappings we actually use instead of inheriting NvChad's full default set.
--- Plugin-specific mappings live in their slice's `keys` field; see CONTEXT.md
--- "Mapping ownership".
-
 map("n", "<C-h>", "<C-w>h", { desc = "Switch window left" })
 map("n", "<C-l>", "<C-w>l", { desc = "Switch window right" })
 map("n", "<C-j>", "<C-w>j", { desc = "Switch window down" })
@@ -42,12 +31,10 @@ map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
--- ============================================================================
--- Multicursor (Neovim 0.13+ native multicursor)
--- ============================================================================
--- - In Normal mode: <C-n> marks current word and jumps to next match (Q* / Qn)
--- - In Visual mode: <C-n> places a cursor on every selected line ({Visual}Q)
+map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
+map("x", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 
+-- `Q*` starts a multicursor on the word; `Qn` adds the next match.
 map("n", "<C-n>", function()
   local ns = vim.api.nvim_create_namespace "nvim.multicursor"
   local marks = vim.api.nvim_buf_get_extmarks(0, ns, 0, -1, {})

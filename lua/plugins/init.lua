@@ -1,22 +1,2 @@
--- ==============================================================================
--- plugins/ — feature slice directory
--- ==============================================================================
---
--- lazy.nvim's `{ import = "plugins" }` (see init.lua) auto-loads every .lua
--- module in this directory, so the directory itself IS the plugin registry —
--- no central list to maintain.
---
--- Adding a plugin = creating a new file here, following the shape of existing
--- slices:
---   * small plugin  → plugins/<name>.lua        return full spec with inline opts
---   * large plugin  → plugins/<name>/init.lua   return spec; private helpers
---                                               go in sibling files
---
--- One slice holds the spec + opts + plugin-specific mappings (lazy's `keys`
--- field) for that feature. Full conventions (mapping ownership, load-order
--- exceptions) are in the repo root's CONTEXT.md.
---
--- This file intentionally contains only this comment — it returns no spec.
--- Real plugins each have their own file.
-
+-- `{ import = "plugins" }` loads this module. It is not a plugin spec.
 return {}
